@@ -1,48 +1,78 @@
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import { Box, Button, Container, Typography, useTheme } from "@mui/material";
 import React, { useContext } from "react";
 import { GlobalContext } from "../../context/GlobalContext";
 import { tokens } from "../../theme";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import Icon from "../../assets/discord.svg"; // Importing SVG as a component
+import defaultImg from "../../assets/cover.jpeg";
 
 export default function header() {
-  const { result } = useContext(GlobalContext);
+  const { dataProfile, sumLikes } = useContext(GlobalContext);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
+  const formatLikes = (likes) => {
+    if (likes >= 1000) {
+      return (likes / 1000).toFixed(2) + "k"; // Format as "1.84k"
+    }
+    return likes.toString(); // Return as is if less than 1000
+  };
   return (
     <Box>
       {/* Cover */}
       <Box
         sx={{
-          width: "100%",
-          backgroundImage: `url(${result.headImg})`,
+          backgroundImage: `url(${dataProfile.headImg})`,
           backgroundPosition: "center center",
           backgroundRepeat: "no-repeat",
           backgroundSize: "100%",
-          height: "450px",
-          maxWidth: "1928px",
+          height: "400px",
           margin: "0 auto",
+          maxWidth: "1920px",
         }}
       ></Box>
-      <Box>
+      <Container disableGutters maxWidth="xl">
         <Box
           sx={{
             margin: "0 auto",
-            maxWidth: "1500px",
-            p: "1rem 0 5rem 18rem",
+            p: ".5rem .5rem 5rem calc(18rem + .8vw)",
             position: "relative",
           }}
           flexDirection="column"
         >
+          {" "}
+          <img
+            unselectable="on"
+            className="unselectable"
+            src={dataProfile.headImg}
+            style={{
+              filter:
+                "blur(8rem) brightness(100%) saturate(200%) opacity(60%) ",
+              width: "100%",
+              objectPosition: "50% 50%",
+              height: "420px",
+              objectFit: "cover",
+              position: "absolute",
+              top: "-400px",
+              left: 0,
+              contentVisibility: "auto",
+              loading: "lazy",
+              zIndex: -1,
+            }}
+            crossOrigin="anonymous"
+            onError={(e) => {
+              e.target.src = defaultImg;
+              e.target.style.backgroundColor = "rgba(255,255,255,0.3)";
+              e.target.onerror = null;
+            }}
+          />
           <img
             className="unselectable"
-            src={result.avatar}
+            src={dataProfile.avatar}
             style={{
               width: "16rem",
               position: "absolute",
               top: "calc(-50% - 2.5rem)",
-              left: "0",
+              left: "1.5%",
               borderRadius: "50%",
               padding: ".3rem",
               border: `0px solid transparent`,
@@ -52,21 +82,31 @@ export default function header() {
               backgroundClip: "border-box",
               boxSizing: "border-box",
             }}
-          />
+          />{" "}
           <Box
             justifyContent="space-between"
             display="flex"
+            alignItems="center"
             flexDirection="row"
           >
-            <Typography variant="h1" component="h3">
-              {result.name}
+            <Typography variant="h1" color="primary" component="h3">
+              {dataProfile.name}
             </Typography>
-            <Box display="flex" gap={2}>
+            <Box display="flex" alignItems="center" gap={2}>
               <a
                 href="https://discord.com/users/1126684688564621332"
                 target="_blank"
+                style={{
+                  display: "flex",
+                  borderRadius: "50%",
+                  padding: 0,
+                }}
               >
-                <img src={Icon} className="unselectable" />
+                <img
+                  src={Icon}
+                  className="unselectable"
+                  style={{ width: "3rem" }}
+                />
               </a>
               <a
                 href="https://www.joyland.ai/profile?userId=8Ad2r"
@@ -74,8 +114,7 @@ export default function header() {
               >
                 <Button
                   sx={{
-                    p: "1rem 2rem",
-                    borderRadius: "1rem",
+                    p: ".8rem 1.8rem",
                     background: "#fff",
                     "&:hover": {
                       background: `${colors.redAccent[500]}ff`,
@@ -89,18 +128,19 @@ export default function header() {
                   variant="outlined"
                   endIcon={<ExitToAppIcon />}
                 >
-                  <Typography sx={{}} variant="h4">
+                  <Typography sx={{}} variant="h5">
                     GO TO JOYLAND
                   </Typography>
                   <span
                     style={{
                       position: "absolute",
-                      top: 0,
-                      left: 0,
+                      top: "-4.5%",
+                      left: "-1.5%",
                       right: 0,
-                      transform: "scaleX(1.02) scaleY(1.1)",
                       bottom: 0,
-                      borderRadius: "1rem",
+                      borderRadius: "4px",
+                      height: "109%",
+                      width: "103%",
                       background: `linear-gradient(to top, ${colors.redAccent[500]} 0%, ${colors.blueAccent[500]} 100%)`,
                       zIndex: -1, // Behind the text
                       filter: "blur(1px)", // Optional: blur the border for a smoother effect
@@ -111,10 +151,10 @@ export default function header() {
             </Box>
           </Box>
           <Typography variant="h4" component="h3">
-            {result.bio}
+            {formatLikes(sumLikes())} Likes
           </Typography>
         </Box>
-      </Box>
+      </Container>
     </Box>
   );
 }
