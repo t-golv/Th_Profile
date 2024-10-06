@@ -1,35 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
+import { ThemeProvider } from "@emotion/react";
+import { ColorModeContext, useMode } from "./theme";
+import { Box, Container, CssBaseline } from "@mui/material";
+import { Outlet } from "react-router-dom";
+import useFetch from "./hooks/useFetch";
+import { useEffect } from "react";
 function App() {
-  const [count, setCount] = useState(0)
-
+  const [theme, colorMode] = useMode();
+  const options = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json, text/plain, */*",
+      "Accept-Language": "en",
+      DNT: "1",
+      Fingerprint: "840cf1fc79e3d7bb243aeb93ed5757f3",
+      Origin: "https://www.joyland.ai",
+      Referer: "https://www.joyland.ai/",
+    },
+  };
+  // const {
+  //   request: requestProfile,
+  //   data: dataProfile,
+  //   loading: loadingProfile,
+  //   error: errorProfile,
+  // } = useFetch();
+  useEffect(() => {
+    // requestProfile(
+    //   `https://api.joyland.ai/profile/info?userId=8Ad2r`,
+    //   options
+    // ).finally();
+  }, []);
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Box component="main">
+          <Outlet />
+        </Box>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
+  );
 }
 
-export default App
+export default App;

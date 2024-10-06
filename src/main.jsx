@@ -1,10 +1,28 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./assets/index.css";
+import App from "./App";
+import Home from "./pages/Home/index";
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+import {
+  createHashRouter,
+  createRoutesFromElements,
+  RouterProvider,
+  Route,
+} from "react-router-dom";
+import { GlobalStorage } from "./context/GlobalContext";
+
+const rotas = createHashRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<App />}>
+      <Route path="/" element={<Home />} />
+    </Route>
+  )
+);
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <GlobalStorage>
+      <RouterProvider router={rotas} />
+    </GlobalStorage>
+  </React.StrictMode>
+);
