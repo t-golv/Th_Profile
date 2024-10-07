@@ -20,9 +20,9 @@ const rotas = createHashRouter(
   )
 );
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <GlobalStorage>
-      <RouterProvider router={rotas} />
-    </GlobalStorage>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <GlobalStorage>
+    <RouterProvider router={rotas} />
+  </GlobalStorage>
+  // </React.StrictMode>
 );

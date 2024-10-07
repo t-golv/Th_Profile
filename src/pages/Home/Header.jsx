@@ -7,7 +7,7 @@ import Icon from "../../assets/discord.svg"; // Importing SVG as a component
 import defaultImg from "../../assets/cover.jpeg";
 
 export default function header() {
-  const { dataProfile, sumLikes } = useContext(GlobalContext);
+  const { dataProfile, sumLikes, dataPublicBots } = useContext(GlobalContext);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const formatLikes = (likes) => {
@@ -21,7 +21,7 @@ export default function header() {
       {/* Cover */}
       <Box
         sx={{
-          backgroundImage: `url(${dataProfile.headImg})`,
+          backgroundImage: `url(${dataProfile?.result.headImg})`,
           backgroundPosition: "center center",
           backgroundRepeat: "no-repeat",
           backgroundSize: "100%",
@@ -43,7 +43,7 @@ export default function header() {
           <img
             unselectable="on"
             className="unselectable"
-            src={dataProfile.headImg}
+            src={dataProfile?.result.headImg}
             style={{
               filter:
                 "blur(8rem) brightness(100%) saturate(200%) opacity(60%) ",
@@ -67,7 +67,7 @@ export default function header() {
           />
           <img
             className="unselectable"
-            src={dataProfile.avatar}
+            src={dataProfile?.result.avatar}
             style={{
               width: "16rem",
               position: "absolute",
@@ -89,8 +89,8 @@ export default function header() {
             alignItems="center"
             flexDirection="row"
           >
-            <Typography variant="h1" color="primary" component="h3">
-              {dataProfile.name}
+            <Typography variant="h1" color="secondary" component="h3">
+              {dataProfile?.result.name}
             </Typography>
             <Box display="flex" alignItems="center" gap={2}>
               <a
@@ -115,7 +115,7 @@ export default function header() {
                 <Button
                   sx={{
                     p: ".8rem 1.8rem",
-                    background: "#fff",
+                    background: "#fffa",
                     "&:hover": {
                       background: `${colors.redAccent[500]}ff`,
                       color: "white",
@@ -151,7 +151,9 @@ export default function header() {
             </Box>
           </Box>
           <Typography variant="h4" component="h3">
-            {formatLikes(sumLikes())} Likes
+            {dataPublicBots?.result &&
+              formatLikes(sumLikes(dataPublicBots?.result))}{" "}
+            Likes
           </Typography>
         </Box>
       </Container>

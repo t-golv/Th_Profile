@@ -41,10 +41,19 @@ export default function TabsContainer() {
           aria-label="basic tabs example"
         >
           <Tab label="Public Bots" {...a11yProps(0)} />
+          <Tab label="Coming Soon" {...a11yProps(1)} />
         </Tabs>
       </Container>
       <CustomTabPanel value={value} index={0}>
         <PublicBots />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
+        <Container
+          maxWidth="xl"
+          sx={{ display: "center", justifyContent: "center" }}
+        >
+          Coming Soon
+        </Container>
       </CustomTabPanel>
     </Box>
   );
